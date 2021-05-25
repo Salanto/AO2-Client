@@ -3797,9 +3797,14 @@ void Courtroom::handle_song(QStringList *p_contents)
   QString f_song = f_contents.at(0);
   QString f_song_clear = f_song.left(f_song.lastIndexOf("."));
   if (f_song.startsWith("http")) {
-    QByteArray f_song_bytearray = f_song.toUtf8();
-    QString f_song_decoded = QUrl::fromPercentEncoding(f_song_bytearray);
-    f_song_clear = f_song_decoded.left(f_song_decoded.lastIndexOf("."));
+    if (ao_app->is_streaming_enabled()) {
+      QByteArray f_song_bytearray = f_song.toUtf8();
+      QString f_song_decoded = QUrl::fromPercentEncoding(f_song_bytearray);
+      f_song_clear = f_song_decoded.left(f_song_decoded.lastIndexOf("."));
+    }
+    else {
+      return;
+    }
   }
   f_song_clear = f_song_clear.right(f_song_clear.length() - (f_song_clear.lastIndexOf("/") + 1));
 
@@ -3824,8 +3829,8 @@ void Courtroom::handle_song(QStringList *p_contents)
       return;
   }
 
-  if(!file_exists(ao_app->get_sfx_suffix(ao_app->get_music_path(f_song))) && !f_song.startsWith("http")
-          && f_song != "~stop.mp3" && !ao_app->asset_url.isEmpty()) {
+  if(!file_exists(ao_app->get_sfx_suffix(ao_app->get_music_path(f_song))) && (ao_app->is_streaming_enabled()) &&
+          !f_song.startsWith("http") && f_song != "~stop.mp3" && !ao_app->asset_url.isEmpty()) {
       f_song = (ao_app->asset_url + "sounds/music/" + f_song).toLower();
   }
 

@@ -550,6 +550,18 @@ AOOptionsDialog::AOOptionsDialog(QWidget *parent, AOApplication *p_ao_app)
 
   ui_gameplay_form->setWidget(row, QFormLayout::FieldRole, ui_category_stop_cb);
 
+  row += 1;
+  ui_streaming_enable_lbl = new QLabel(ui_form_layout_widget);
+  ui_streaming_enable_lbl->setText(tr("Enable Streaming:"));
+  ui_streaming_enable_lbl->setToolTip(
+       tr("Enables the clients streaming feature. Untick for people with low bandwith or limited data."));
+
+  ui_gameplay_form->setWidget(row, QFormLayout::LabelRole, ui_streaming_enable_lbl);
+
+  ui_streaming_enable_cb = new QCheckBox(ui_form_layout_widget);
+
+  ui_gameplay_form->setWidget(row, QFormLayout::FieldRole,  ui_streaming_enable_cb);
+
   QScrollArea *scroll = new QScrollArea(this);
   scroll->setWidget(ui_form_layout_widget);
   ui_gameplay_tab->setLayout(new QVBoxLayout);
@@ -955,6 +967,7 @@ void AOOptionsDialog::update_values() {
   ui_sticker_cb->setChecked(ao_app->is_sticker_enabled());
   ui_continuous_cb->setChecked(ao_app->is_continuous_enabled());
   ui_category_stop_cb->setChecked(ao_app->is_category_stop_enabled());
+  ui_streaming_enable_cb->setChecked(ao_app->is_streaming_enabled());
   ui_blank_blips_cb->setChecked(ao_app->get_blank_blip());
   ui_loopsfx_cb->setChecked(ao_app->get_looping_sfx());
   ui_objectmusic_cb->setChecked(ao_app->objection_stop_music());
@@ -1019,6 +1032,7 @@ void AOOptionsDialog::save_pressed()
   configini->setValue("automatic_logging_enabled", ui_log_cb->isChecked());
   configini->setValue("continuous_playback", ui_continuous_cb->isChecked());
   configini->setValue("category_stop", ui_category_stop_cb->isChecked());
+  configini->setValue("streaming_enabled", ui_streaming_enable_cb->isChecked());
   QFile *callwordsini = new QFile(ao_app->get_base_path() + "callwords.ini");
 
   if (callwordsini->open(QIODevice::WriteOnly | QIODevice::Truncate |

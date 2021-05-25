@@ -121,6 +121,9 @@ private:
   QLabel *ui_category_stop_lbl;
   QCheckBox *ui_category_stop_cb;
 
+  QLabel *ui_streaming_enable_lbl;
+  QCheckBox *ui_streaming_enable_cb;
+
   QWidget *ui_callwords_tab;
   QWidget *ui_callwords_widget;
   QVBoxLayout *ui_callwords_layout;
