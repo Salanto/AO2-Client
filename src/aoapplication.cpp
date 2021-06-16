@@ -18,7 +18,8 @@ AOApplication::AOApplication(int &argc, char **argv) : QApplication(argc, argv)
   discord = new AttorneyOnline::Discord();
   QObject::connect(net_manager, SIGNAL(ms_connect_finished(bool, bool)),
                    SLOT(ms_connect_finished(bool, bool)));
-  qApp->setStyleSheet("QFrame {background-color:transparent;} QAbstractItemView {background-color: transparent; color: black;}; QLineEdit {background-color:transparent;}");
+
+  asset_lookup_cache.reserve(2048);
 }
 
 AOApplication::~AOApplication()
@@ -26,6 +27,7 @@ AOApplication::~AOApplication()
   destruct_lobby();
   destruct_courtroom();
   delete discord;
+  delete configini;
 }
 
 void AOApplication::construct_lobby()
