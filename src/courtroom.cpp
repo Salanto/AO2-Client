@@ -164,10 +164,12 @@ Courtroom::Courtroom(AOApplication *p_ao_app) : QMainWindow()
   ui_ic_chat_name->setText(p_ao_app->get_default_showname());
   ui_ic_chat_name->setObjectName("ui_ic_chat_name");
 
-  ui_ic_chat_message = new AOLineEdit(this);
+  ui_ic_chat_message = new QLineEdit(this);
   ui_ic_chat_message->setFrame(false);
   ui_ic_chat_message->setPlaceholderText(tr("Message"));
-  ui_ic_chat_message->preserve_selection(true);
+  ui_ic_chat_message_filter = new AOLineEditFilter();
+  ui_ic_chat_message_filter->preserve_selection = true;
+  ui_ic_chat_message->installEventFilter(ui_ic_chat_message_filter);
   ui_ic_chat_message->setObjectName("ui_ic_chat_message");
 
   ui_vp_sticker = new StickerLayer(ui_viewport, ao_app);
@@ -4589,7 +4591,7 @@ void Courtroom::set_sfx_dropdown()
 
 void Courtroom::on_sfx_dropdown_changed(int p_index)
 {
-  UNUSED(p_index);
+  Q_UNUSED(p_index);
   ui_ic_chat_message->setFocus();
   ui_sfx_remove->hide();
   custom_sfx = "";
@@ -4969,7 +4971,7 @@ void Courtroom::music_stop(bool no_effects)
 void Courtroom::on_area_list_double_clicked(QTreeWidgetItem *p_item, int column)
 {
   column = 0; // The metadata
-  UNUSED(column); // so gcc shuts up
+  Q_UNUSED(column); // so gcc shuts up
   QString p_area = p_item->text(0);
 
   QStringList packet_contents;
